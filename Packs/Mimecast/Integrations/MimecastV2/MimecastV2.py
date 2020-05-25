@@ -1,6 +1,4 @@
-import demistomock as demisto
 from CommonServerPython import *
-from CommonServerUserPython import *
 
 ''' IMPORTS '''
 
@@ -68,13 +66,7 @@ default_query_xml = "<?xml version=\"1.0\"?> \n\
 
 def determine_ssl_usage():
     global USE_SSL
-
-    old_insecure = demisto.params().get('insecure', None)
-    if old_insecure:
-        USE_SSL = True if old_insecure else False
-        return
-
-    USE_SSL = False if demisto.params().get('new_insecure') else True
+    USE_SSL = False
 
 
 def epoch_seconds(d=None):
@@ -2099,71 +2091,74 @@ def get_mimecast_incident_request():
 
 
 def mimecast_incident_api_response_to_markdown(api_response, action_type):
-    incident_code = api_response['data'][0]['code']
-    incident_type = api_response['data'][0]['type']
-    incident_reason = api_response['data'][0]['reason']
-    incident_identified_messages_amount = api_response['data'][0]['Identified']
-    incident_successful_messages_amount = api_response['data'][0]['Successful']
-    incident_failed_messages_amount = api_response['data'][0]['Failed']
-    incident_restored_messages_amount = api_response['data'][0]['Restored']
-    incident_id = api_response['data'][0]['id']
+    incident_code = api_response['data'][0].get('code', '')
+    incident_type = api_response['data'][0].get('type', '')
+    incident_reason = api_response['data'][0].get('reason', '')
+    incident_identified_messages_amount = api_response['data'][0].get('identified', 0)
+    incident_successful_messages_amount = api_response['data'][0].get('successful', 0)
+    incident_failed_messages_amount = api_response['data'][0].get('failed', 0)
+    incident_restored_messages_amount = api_response['data'][0].get('restored', 0)
+    incident_id = api_response['data'][0].get('id', '')
 
     if action_type == 'create':
-        md = 'Incident ' + incident_id + ' has been created\n'
+        md = 'Incident ' + incident_id + ' has been created'
     else:
-        md = 'Incident ' + incident_id + ' has been found\n'
+        md = 'Incident ' + incident_id + ' has been found'
+    md_metadata = """
+#### Code: {incident_code}
+#### Type: {incident_type}
+#### Reason: {incident_reason}
+#### The number of messages identified based on the search criteria: {incident_identified_messages_amount}
+#### The number successfully remediated messages: {incident_successful_messages_amount}
+#### The number of messages that failed to remediate: {incident_failed_messages_amount}
+#### The number of messages that were restored from the incident: {incident_restored_messages_amount}
+""".format(incident_code=incident_code,
+           incident_type=incident_type,
+           incident_reason=incident_reason,
+           incident_identified_messages_amount=incident_identified_messages_amount,
+           incident_successful_messages_amount=incident_successful_messages_amount,
+           incident_failed_messages_amount=incident_failed_messages_amount,
+           incident_restored_messages_amount=incident_restored_messages_amount)
 
-    md_metadata = '####Code: ' + incident_code
-    md_metadata += '\n####Type: ' + incident_type
-    md_metadata += '\n####Reason: ' + incident_reason
-    md_metadata += '\n####The number of messages identified based on the search criteria: ' + incident_identified_messages_amount
-    md_metadata += '\n####The number successfully remediated messages: ' + incident_successful_messages_amount
-    md_metadata += '\n####The number of messages that failed to remediate: ' + incident_failed_messages_amount
-    md_metadata += '\n####The number of messages that were restored from the incident: ' + incident_restored_messages_amount
+    message = api_response['data'][0]['searchCriteria']
+    message_entry = {
+        'From': message.get('from'),
+        'To': message.get('to'),
+        'Start date': message.get('start'),
+        'End date': message.get('end'),
+        'Message ID': message.get('messageId'),
+        'File hash': message.get('fileHash')
+    }
 
-    messages_table_list = list()
-    for message in api_response['data'][0]['searchCriteria']:
-        message_entry = {
-            'From': message['from'],
-            'To': message['to'],
-            'Start date': datetime.strptime(message['start'], '%Y-%m-%dT%H:%M:%SZ'),
-            'End date': datetime.strptime(message['end'], '%Y-%m-%dT%H:%M:%SZ'),
-            'Message ID': message['messageId'],
-            'File hash': message['fileHash']
-        }
-
-        messages_table_list.append(message_entry)
-
-    md = tableToMarkdown(md, messages_table_list,
-                         ['From', 'To', 'Start', 'End date', 'Message ID', 'File hash'], metadata=md_metadata)
+    md = tableToMarkdown(md, message_entry,
+                         ['From', 'To', 'Start', 'End date', 'Message ID', 'File hash'], metadata=md_metadata, removeNull=True)
 
     return md
 
 
 def mimecast_incident_api_response_to_context(api_response):
-    messages_table_list = list()
-    for message in api_response['data'][0]['searchCriteria']:
-        message_entry = {
-            'From': message['from'],
-            'To': message['to'],
-            'MessageID': message['messageId'],
-            'FileHash': message['fileHash'],
-            'StartDate': datetime.strptime(message['start'], '%Y-%m-%dT%H:%M:%SZ'),
-            'EndDate': datetime.strptime(message['end'], '%Y-%m-%dT%H:%M:%SZ')
-        }
-    messages_table_list.append(message_entry)
+    response_data = api_response['data'][0]
+    message = response_data['searchCriteria']
+    message_entry = {
+        'From': message.get('from'),
+        'To': message.get('to'),
+        'StartDate': message.get('start'),
+        'EndDate': message.get('end'),
+        'MessageID': message.get('messageId'),
+        'FileHash': message.get('fileHash')
+    }
 
     incident_created = {
-        'ID': api_response['data'][0]['id'],
-        'Code': api_response['data'][0]['code'],
-        'Type': api_response['data'][0]['type'],
-        'Reason': api_response['data'][0]['reason'],
-        'IdentifiedMessages': api_response['data'][0]['identified'],
-        'SuccessfullyRemediatedMessages': api_response['data'][0]['successful'],
-        'FailedRemediatedMessages': api_response['data'][0]['failed'],
-        'MessagesRestored': api_response['data'][0]['restored'],
-        'LastModified': datetime.strptime(api_response['data'][0]['modified'], '%Y-%m-%dT%H:%M:%SZ'),
-        'SearchCriteria': messages_table_list
+        'ID': response_data.get('id'),
+        'Code': response_data.get('code'),
+        'Type': response_data.get('type'),
+        'Reason': response_data.get('reason'),
+        'IdentifiedMessages': response_data.get('identified'),
+        'SuccessfullyRemediatedMessages': response_data.get('successful'),
+        'FailedRemediatedMessages': response_data.get('failed'),
+        'MessagesRestored': response_data.get('restored'),
+        'LastModified': response_data.get('modified'),
+        'SearchCriteria': message_entry
     }
 
     return {'Mimecast.Incident(val.ID && val.ID == obj.ID)': incident_created}
@@ -2309,5 +2304,5 @@ def main():
         return_error(e.message)
 
 
-if __name__ in ('__builtin__', 'builtins'):
+if __name__ in ('__builtin__', 'builtins', '__main__'):
     main()

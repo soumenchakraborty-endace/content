@@ -1,5 +1,5 @@
 ## [Unreleased]
-
+Fixed parsing of create-mimecast-incident response
 
 ## [20.5.0] - 2020-05-12
 -
