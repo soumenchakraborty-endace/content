@@ -102,7 +102,7 @@ INCIDENT_API_RESPONSE = {
             'searchCriteria': {
                 'start': '2020-04-25T10:01:53+0000',
                 'end': '2020-05-25T22:01:53+0000',
-                'messageId': '<Mimecast.5.da503034fda465eb.171f650196c@snd-sl-2.snd.mimecast.lan>'
+                'messageId': 'test message id'
             },
             'restored': 0
         }
@@ -121,7 +121,7 @@ EXPECTED_MARKDOWN_RESPONSE = """### Incident test-id has been created
 
 |End date|Message ID|
 |---|---|
-| 2020-05-25T22:01:53+0000 | <Mimecast.5.da503034fda465eb.171f650196c@snd-sl-2.snd.mimecast.lan> |
+| 2020-05-25T22:01:53+0000 | test message id |
 """
 
 
@@ -143,7 +143,7 @@ EXPECTED_CONTEXT_RESPONSE = {
             'EndDate': '2020-05-25T22:01:53+0000',
             'FileHash': None,
             'To': None,
-            'MessageID': '<Mimecast.5.da503034fda465eb.171f650196c@snd-sl-2.snd.mimecast.lan>',
+            'MessageID': 'test message id',
             'From': None
         },
         'Type': 'manual',

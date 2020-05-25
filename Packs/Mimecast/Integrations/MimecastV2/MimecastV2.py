@@ -1,4 +1,6 @@
+import demistomock as demisto
 from CommonServerPython import *
+from CommonServerUserPython import *
 
 ''' IMPORTS '''
 
@@ -66,7 +68,13 @@ default_query_xml = "<?xml version=\"1.0\"?> \n\
 
 def determine_ssl_usage():
     global USE_SSL
-    USE_SSL = False
+
+    old_insecure = demisto.params().get('insecure', None)
+    if old_insecure:
+        USE_SSL = True if old_insecure else False
+        return
+
+    USE_SSL = False if demisto.params().get('new_insecure') else True
 
 
 def epoch_seconds(d=None):
@@ -2091,14 +2099,15 @@ def get_mimecast_incident_request():
 
 
 def mimecast_incident_api_response_to_markdown(api_response, action_type):
-    incident_code = api_response['data'][0].get('code', '')
-    incident_type = api_response['data'][0].get('type', '')
-    incident_reason = api_response['data'][0].get('reason', '')
-    incident_identified_messages_amount = api_response['data'][0].get('identified', 0)
-    incident_successful_messages_amount = api_response['data'][0].get('successful', 0)
-    incident_failed_messages_amount = api_response['data'][0].get('failed', 0)
-    incident_restored_messages_amount = api_response['data'][0].get('restored', 0)
-    incident_id = api_response['data'][0].get('id', '')
+    response_data = api_response.get('data', [{}])[0]
+    incident_code = response_data.get('code', '')
+    incident_type = response_data.get('type', '')
+    incident_reason = response_data.get('reason', '')
+    incident_identified_messages_amount = response_data.get('identified', 0)
+    incident_successful_messages_amount = response_data.get('successful', 0)
+    incident_failed_messages_amount = response_data.get('failed', 0)
+    incident_restored_messages_amount = response_data.get('restored', 0)
+    incident_id = response_data.get('id', '')
 
     if action_type == 'create':
         md = 'Incident ' + incident_id + ' has been created'
@@ -2120,7 +2129,7 @@ def mimecast_incident_api_response_to_markdown(api_response, action_type):
            incident_failed_messages_amount=incident_failed_messages_amount,
            incident_restored_messages_amount=incident_restored_messages_amount)
 
-    message = api_response['data'][0]['searchCriteria']
+    message = response_data['searchCriteria']
     message_entry = {
         'From': message.get('from'),
         'To': message.get('to'),
@@ -2130,8 +2139,11 @@ def mimecast_incident_api_response_to_markdown(api_response, action_type):
         'File hash': message.get('fileHash')
     }
 
-    md = tableToMarkdown(md, message_entry,
-                         ['From', 'To', 'Start', 'End date', 'Message ID', 'File hash'], metadata=md_metadata, removeNull=True)
+    md = tableToMarkdown(md,
+                         message_entry,
+                         ['From', 'To', 'Start', 'End date', 'Message ID', 'File hash'],
+                         metadata=md_metadata,
+                         removeNull=True)
 
     return md
 
