@@ -103,7 +103,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1135,
+          "x": 582.5,
           "y": 2205
         }
       }
@@ -158,7 +158,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1135,
+          "x": 582.5,
           "y": 2555
         }
       }
@@ -197,7 +197,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 685,
+          "x": 1135,
           "y": 2380
         }
       }
@@ -883,7 +883,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 572.5,
+          "x": 1022.5,
           "y": 1680
         }
       }
@@ -1011,7 +1011,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 685,
+          "x": 1135,
           "y": 2730
         }
       }
@@ -1049,7 +1049,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1135,
+          "x": 582.5,
           "y": 2380
         }
       }
@@ -1087,7 +1087,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1135,
+          "x": 582.5,
           "y": 2730
         }
       }
@@ -1138,7 +1138,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1135,
+          "x": 582.5,
           "y": 2905
         }
       }
@@ -1339,7 +1339,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 685,
+          "x": 1135,
           "y": 2555
         }
       }
@@ -1441,7 +1441,7 @@ tasks:
       {
         "position": {
           "x": 910,
-          "y": 5325
+          "y": 6375
         }
       }
     note: false
@@ -1514,7 +1514,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 685,
+          "x": 1135,
           "y": 2205
         }
       }
@@ -1553,7 +1553,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 685,
+          "x": 1135,
           "y": 2905
         }
       }
@@ -1564,11 +1564,10 @@ tasks:
     quietmode: 0
   "83":
     id: "83"
-    taskid: 6b2156a5-1174-4747-8cb1-4c643af878fd
+    taskid: c52049e5-5584-484e-8370-14f5dbbb03b9
     type: regular
     task:
-      elasticcommonfields: {}
-      id: 6b2156a5-1174-4747-8cb1-4c643af878fd
+      id: c52049e5-5584-484e-8370-14f5dbbb03b9
       version: -1
       name: Edit indicator
       description: Updates an indicator in ThreatQ.
@@ -1592,7 +1591,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 685,
+          "x": 1135,
           "y": 1855
         }
       }
@@ -1633,7 +1632,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 685,
+          "x": 1135,
           "y": 2030
         }
       }
@@ -1693,7 +1692,7 @@ tasks:
       brand: ""
     nexttasks:
       "yes":
-      - "74"
+      - "116"
     separatecontext: false
     conditions:
     - label: "yes"
@@ -1790,7 +1789,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 685,
+          "x": 1135,
           "y": 1185
         }
       }
@@ -1818,7 +1817,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1135,
+          "x": 582.5,
           "y": 1520
         }
       }
@@ -1854,7 +1853,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1135,
+          "x": 582.5,
           "y": 1680
         }
       }
@@ -1892,7 +1891,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1135,
+          "x": 582.5,
           "y": 1855
         }
       }
@@ -1928,7 +1927,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 685,
+          "x": 1135,
           "y": 1330
         }
       }
@@ -1966,7 +1965,7 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 685,
+          "x": 1135,
           "y": 1505
         }
       }
@@ -2003,12 +2002,238 @@ tasks:
     ignoreworker: false
     skipunavailable: false
     quietmode: 0
+  "116":
+    id: "116"
+    taskid: ad75f397-e3b5-42f0-8005-00c57164f30d
+    type: regular
+    task:
+      id: ad75f397-e3b5-42f0-8005-00c57164f30d
+      version: -1
+      name: Delete context
+      description: Delete field from context
+      scriptName: DeleteContext
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "117"
+    scriptarguments:
+      all:
+        simple: "yes"
+      index: {}
+      key: {}
+      keysToKeep: {}
+      subplaybook: {}
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 5325
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "117":
+    id: "117"
+    taskid: d54cd6f1-3ea7-4a62-843e-0e9926bae530
+    type: regular
+    task:
+      id: d54cd6f1-3ea7-4a62-843e-0e9926bae530
+      version: -1
+      name: get ip 8.8.8.8
+      description: Checks the reputation of an IP address in ThreatQ.
+      script: ThreatQ v2|||ip
+      type: regular
+      iscommand: true
+      brand: ThreatQ v2
+    nexttasks:
+      '#none#':
+      - "118"
+    scriptarguments:
+      fullResponse: {}
+      ip:
+        simple: 8.8.8.8
+      long: {}
+      retries: {}
+      sampleSize: {}
+      threshold: {}
+      wait: {}
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 5500
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "118":
+    id: "118"
+    taskid: bd0a5483-cca8-4402-87a9-e6346b2abc35
+    type: regular
+    task:
+      id: bd0a5483-cca8-4402-87a9-e6346b2abc35
+      version: -1
+      name: get ip 10.50.0.1
+      description: Checks the reputation of an IP address in ThreatQ.
+      script: ThreatQ v2|||ip
+      type: regular
+      iscommand: true
+      brand: ThreatQ v2
+    nexttasks:
+      '#none#':
+      - "119"
+    scriptarguments:
+      fullResponse: {}
+      ip:
+        simple: 10.50.0.1
+      long: {}
+      retries: {}
+      sampleSize: {}
+      threshold: {}
+      wait: {}
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 5675
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "119":
+    id: "119"
+    taskid: 923fa5d9-19d6-49be-8bed-b9e8bc02c224
+    type: condition
+    task:
+      id: 923fa5d9-19d6-49be-8bed-b9e8bc02c224
+      version: -1
+      name: Check context is incremented
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "120"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: hasLength
+          left:
+            value:
+              simple: ThreatQ.Indicator
+            iscontext: true
+          right:
+            value:
+              simple: "2"
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 5850
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "120":
+    id: "120"
+    taskid: d7a7437d-cd25-4f0f-86f8-c0801a37df8b
+    type: regular
+    task:
+      id: d7a7437d-cd25-4f0f-86f8-c0801a37df8b
+      version: -1
+      name: get ip 8.8.8.8 again
+      description: Checks the reputation of an IP address in ThreatQ.
+      script: ThreatQ v2|||ip
+      type: regular
+      iscommand: true
+      brand: ThreatQ v2
+    nexttasks:
+      '#none#':
+      - "121"
+    scriptarguments:
+      fullResponse: {}
+      ip:
+        simple: 8.8.8.8
+      long: {}
+      retries: {}
+      sampleSize: {}
+      threshold: {}
+      wait: {}
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 6025
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "121":
+    id: "121"
+    taskid: 51590ffd-8564-4fab-8df8-363e4b8a96aa
+    type: condition
+    task:
+      id: 51590ffd-8564-4fab-8df8-363e4b8a96aa
+      version: -1
+      name: Check indicator with same value is not duplicated
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "74"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: hasLength
+          left:
+            value:
+              simple: ThreatQ.Indicator
+            iscontext: true
+          right:
+            value:
+              simple: "2"
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 6200
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
 view: |-
   {
     "linkLabelsPosition": {},
     "paper": {
       "dimensions": {
-        "height": 5340,
+        "height": 6390,
         "width": 2100,
         "x": 50,
         "y": 50
