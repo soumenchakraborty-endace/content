@@ -779,7 +779,10 @@ def execute_testing(tests_settings, server_ip, mockable_tests_names, unmockable_
         # first run the mock tests to avoid mockless side effects in container
         if is_ami and mockable_tests:
             proxy.configure_proxy_in_demisto(demisto_api_key, server, proxy.ami.docker_ip + ':' + proxy.PROXY_PORT)
-            for t in mockable_tests:
+            for i, t in enumerate(mockable_tests):
+                if thread_index == i and 3 < thread_index < 7:
+                    raise Exception(f'testing crash {thread_index}')
+                
                 run_test_scenario(tests_settings, t, proxy, default_test_timeout, skipped_tests_conf,
                                   nightly_integrations, skipped_integrations_conf, skipped_integration, is_nightly,
                                   run_all_tests, is_filter_configured, filtered_tests,
